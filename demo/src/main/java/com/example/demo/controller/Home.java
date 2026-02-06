@@ -4,10 +4,10 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.entities.Book;
 import com.example.demo.repositories.BookRepository;
@@ -16,7 +16,7 @@ import com.example.demo.service.BookService;
 import org.springframework.ui.Model;
 
 @RestController
-// @CrossOrigin("http://localhost:5173")
+@RequestMapping("/api")
 public class Home {
 
   @Autowired
