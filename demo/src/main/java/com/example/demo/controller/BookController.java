@@ -34,7 +34,7 @@ import com.example.demo.entities.Book;
 import com.example.demo.entities.User;
 
 @RestController
-@CrossOrigin("http://localhost:5173")
+// @CrossOrigin("http://localhost:5173")
 @RequestMapping("/api")
 public class BookController {
   @Autowired

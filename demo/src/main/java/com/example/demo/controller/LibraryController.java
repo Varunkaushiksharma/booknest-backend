@@ -24,7 +24,7 @@ import com.example.demo.repositories.UserRepository;
 
 @RestController
 @RequestMapping("/api/library")
-@CrossOrigin("http://localhost:5173")
+// @CrossOrigin("http://localhost:5173")
 public class LibraryController {
 
   @Autowired

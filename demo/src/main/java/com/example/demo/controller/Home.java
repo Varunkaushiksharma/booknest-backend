@@ -16,7 +16,7 @@ import com.example.demo.service.BookService;
 import org.springframework.ui.Model;
 
 @RestController
-@CrossOrigin("http://localhost:5173")
+// @CrossOrigin("http://localhost:5173")
 public class Home {
 
   @Autowired
