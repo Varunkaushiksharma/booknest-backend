@@ -33,7 +33,7 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable()) // Disable CSRF for simplicity, not recommended for production
         .authorizeHttpRequests(
             auth -> auth
-              .requestMatchers("/home", "/api/books","/signup","/login","/api/users/signup","/api/users/login","/uploads/**")
+              .requestMatchers("/home", "/api/books/**","/signup","/login","/api/users/signup","/api/users/login","/uploads/**")
               .permitAll()
               .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest()

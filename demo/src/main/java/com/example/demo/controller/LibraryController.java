@@ -84,7 +84,7 @@ public ResponseEntity<?> removeFromLibrary(@PathVariable int bookId, @Authentica
         return ResponseEntity.badRequest().body("Book not in library");
     }
 
-    libraryRepository.delete(libraryEntryOpt.get());
+    libraryRepository.delete(libraryEntryOpt.orElseThrow());
     return ResponseEntity.ok("Book removed from library");
 }
 }

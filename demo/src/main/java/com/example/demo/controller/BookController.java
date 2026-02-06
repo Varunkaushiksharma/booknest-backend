@@ -94,8 +94,9 @@ public ResponseEntity<?> getBookById(@PathVariable int id) {
 
   @GetMapping("/books/search/{name}")
   public List<Book> findBookByName(@PathVariable String name) {
-    return bookRepository.findAll().stream().filter(e -> e.getName().equalsIgnoreCase(name)).toList();
+    return bookRepository.searchByName(name.toLowerCase());
   }
+  
 @GetMapping("/books/my")
 public ResponseEntity<?> getMyBooks(@AuthenticationPrincipal UserDetails userDetails) {
     Optional<User> userOpt = userRepository.findByEmail(userDetails.getUsername());

@@ -18,6 +18,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.lang.NonNull;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -29,8 +30,17 @@ public class JwtFilter extends OncePerRequestFilter {
   ApplicationContext context;
 
   @Override
-  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+  protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
       throws ServletException, IOException {
+
+      String path = request.getServletPath();
+
+      if (path.startsWith("/api/users/login") 
+          || path.startsWith("/api/users/signup")) {
+          filterChain.doFilter(request, response);
+          return;
+      }
+
     String authHeader = request.getHeader("Authorization");
     String token = null;
     String username = null;
