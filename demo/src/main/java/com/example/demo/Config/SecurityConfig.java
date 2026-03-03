@@ -39,7 +39,7 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable()) // Disable CSRF for simplicity, not recommended for production
         .authorizeHttpRequests(
             auth -> auth
-              .requestMatchers("/home", "/api/books/**","/signup","/login","/api/users/signup","/api/users/login","/uploads/**")
+              .requestMatchers("/api/home", "/api/books/**","/signup","/login","/api/users/signup","/api/users/login","/uploads/**")
               .permitAll()
               .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest()
@@ -75,6 +75,7 @@ public AuthenticationProvider authenticationProvider(UserService userService) {
       CorsConfiguration config = new CorsConfiguration();
 
       config.setAllowedOrigins(List.of(
+          "http://localhost:5173",
           "https://booknest-coral.vercel.app"
       ));
       config.setAllowedMethods(List.of(
