@@ -92,28 +92,42 @@ public ResponseEntity<?> getBookById(@PathVariable int id) {
     return "Book deleted successfully";
   }
 
-  @GetMapping("/books/search/{name}")
-  public List<Book> findBookByName(@PathVariable String name) {
-    return bookRepository.searchByName(name.toLowerCase());
+  @GetMapping("/books/search")
+  public List<Book> searchBooks(@RequestParam String query) {
+      return bookRepository.findByNameContainingIgnoreCaseOrAuthorContainingIgnoreCase(query, query);
   }
-  
-@GetMapping("/books/my")
-public ResponseEntity<?> getMyBooks(@AuthenticationPrincipal UserDetails userDetails) {
-    Optional<User> userOpt = userRepository.findByEmail(userDetails.getUsername());
-    if (userOpt.isEmpty()) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
-    }
+    @GetMapping("/books/my")
+    public ResponseEntity<?> getMyBooks(@AuthenticationPrincipal UserDetails userDetails) {
+        Optional<User> userOpt = userRepository.findByEmail(userDetails.getUsername());
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
+        }
 
-    List<Book> books = bookRepository.findByUser(userOpt.get());
-    return ResponseEntity.ok(books);
-}
+        List<Book> books = bookRepository.findByUser(userOpt.get());
+        return ResponseEntity.ok(books);
+    }
 
     @PostMapping("/books/upload")
     public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
-        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-        Path path = Paths.get("uploads/" + fileName);
-        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-        return ResponseEntity.ok("/uploads/" + fileName);
+        String originalName = file.getOriginalFilename();
+
+    // ✅ CLEAN filename
+    String cleanName = originalName
+            .replaceAll("[^a-zA-Z0-9\\.\\-]", "_"); // remove emoji, spaces, #
+
+    String fileName = UUID.randomUUID() + "_" + cleanName;
+
+    // ✅ Ensure uploads folder exists
+    Path uploadPath = Paths.get("uploads");
+    if (!Files.exists(uploadPath)) {
+        Files.createDirectories(uploadPath);
+    }
+
+    Path path = uploadPath.resolve(fileName);
+
+    Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+    return ResponseEntity.ok("/uploads/" + fileName);
     }
 
 

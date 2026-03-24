@@ -13,6 +13,5 @@ import com.example.demo.entities.User;
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
     List<Book> findByUser(User user);
-    @Query("SELECT b FROM Book b WHERE LOWER(b.name) LIKE %:name%")
-    List<Book> searchByName(@Param("name") String name);
+    List<Book> findByNameContainingIgnoreCaseOrAuthorContainingIgnoreCase(String name, String author);
 }

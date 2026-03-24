@@ -41,10 +41,13 @@ public class UserController {
   }
   @PostMapping("/login")
   public ResponseEntity<?> login(@RequestBody LoginDTO user) {
-    // You can add checks here like user existence, validation etc.
-    String token = authService.login(user);
-    
-    return ResponseEntity.ok(new JwtResponseDTO(token));
+      try {
+        String token = authService.login(user);
+        return ResponseEntity.ok(new JwtResponseDTO(token));
+      } catch (Exception e) {
+        e.printStackTrace(); // 🔥 VERY IMPORTANT
+        return ResponseEntity.status(401).body("Login failed: " + e.getMessage());
+      }
   }
 
   @GetMapping("/me")
